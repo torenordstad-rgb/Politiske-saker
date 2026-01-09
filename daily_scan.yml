@@ -1,0 +1,25 @@
+name: Ukentlig Klimaløfte-skann
+on:
+  schedule:
+    - cron: '0 08 * * 1' # Kjører kl. 08:00 hver mandag
+  workflow_dispatch: # Gjør at du kan starte den manuelt med en knapp
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@v3
+
+      - name: Sett opp Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Installer avhengigheter
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
+
+      - name: Kjør skanner
+        run: python main.py
